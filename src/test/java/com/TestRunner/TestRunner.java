@@ -20,18 +20,14 @@ plugin = {"pretty","summary","html:target/cucumber-reports/cucumber.html",
 		"io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"})
 
 public class TestRunner   extends AbstractTestNGCucumberTests{
-	BaseClass base = new BaseClass();
-
 	@BeforeClass
-	public  void Startup() {
-	base.ChromebrowserLaunch();
-	base.maximizeWindow();
-	
+	public static void launch() {
+		BaseClass.browserLaunch();
 	}
-	 
-   @AfterClass
-  	public void end() {
-	 base.quitchrome();
+	
+	@AfterClass
+	public static void close() {
+		BaseClass.closeBrowser();
 	}
 
 }

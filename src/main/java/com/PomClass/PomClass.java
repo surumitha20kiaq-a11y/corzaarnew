@@ -194,6 +194,9 @@ public class PomClass {
     	        By.xpath(".//button[contains(normalize-space(.),'Copy')]")
     	    );
     	    }
+     @FindBy(xpath = "//main//a[contains(@class,'group')]//span[contains(@class,'font-black')]")
+     private List<WebElement> courseprice;
+     
       @FindBy(xpath = "//h4[normalize-space()='Copied to Clipboard!']")
 	    private WebElement copyMessage;
       
@@ -229,7 +232,11 @@ public class PomClass {
       
       @FindBy(xpath = "//main//h1")
       private WebElement courseDetails;
-
+      
+      @FindBy(xpath="//main//a[contains(@class,'group')]")
+      private List<WebElement> courseCard;
+      
+      
 //      ===============Getters=======================================
       public WebElement signinbutton() {
     	  return signin;
@@ -361,9 +368,7 @@ public class PomClass {
       public List<WebElement> getcourseratings (){
     	  return courseratings;
       }
-      public List<WebElement> getCoursePrices() {
-    	    return courseprices;
-    	}
+     
       public List<WebElement> getInstituteName() {
     	    return institutename;
     	}
@@ -416,6 +421,9 @@ public class PomClass {
       public WebElement getReferralCodeField() {
     	    return referralCodeField;
     	}
+      public List<WebElement> getcourseprice() {
+    	    return courseprice;
+    	}
 
       public WebElement getTuitionSubtotal() {
 return tuitionSubtotal;
@@ -428,6 +436,9 @@ return payAndEnrollButton;
 }
 public WebElement getCourseDetails() {
 return courseDetails;
+}
+public List<WebElement> getcourseCard() {
+    return courseCard;
 }
 
 }

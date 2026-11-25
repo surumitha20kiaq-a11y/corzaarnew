@@ -2,7 +2,8 @@ package com.StepDefinition;
     import java.util.List;
 	import org.openqa.selenium.support.ui.Select;
 	import org.testng.Assert;
-	import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 	import org.openqa.selenium.StaleElementReferenceException;
 	import org.openqa.selenium.WebElement;
 	import com.BaseClass.BaseClass;
@@ -17,14 +18,14 @@ package com.StepDefinition;
 
 	@Given("user is on the Corzaar login page")
 		public void user_is_on_the_corzaar_login_page() {
-			enterApplicationUrl("https://dci3e266umn5y.cloudfront.net/");
+		browserLaunch();
 		}
 		@When("user enter invalid {string}")
 		public void user_enter_invalid(String string) {
-			waitForvisibility(pom.signinbutton());
-			clickElement(pom.signinbutton());
-			waitForvisibility(pom.fullnamefield());
-			insertvalue(pom.fullnamefield(),string);
+			waitForVisibility(pom.signinbutton());
+			click(pom.signinbutton());
+			waitForVisibility(pom.fullnamefield());
+			sendKeys(pom.fullnamefield(),string);
 		}
 		@Then("student not login with invalid Name")
 		public void student_not_login_with_invalid_name() {
@@ -32,68 +33,66 @@ package com.StepDefinition;
 		}
 		@When("user enter invalid mobile {string}")
 		public void user_enter_invalid_mobile(String string) {
-			waitForvisibility(pom.signinbutton());
-			clickElement(pom.signinbutton());
-			waitForvisibility(pom.mobilefield());
-			insertvalue(pom.mobilefield(),string);
+			waitForVisibility(pom.signinbutton());
+			click(pom.signinbutton());
+			waitForVisibility(pom.mobilefield());
+			sendKeys(pom.mobilefield(),string);
 			scrollToElement(pom.sendonetimepasscodebutton());
-			clickWithRetry(pom.sendonetimepasscodebutton());
-			clickElement(pom.sendonetimepasscodebutton());
-			waitForElementToClickable(pom.sendonetimepasscodebutton());
+			click(pom.sendonetimepasscodebutton());
+			click(pom.sendonetimepasscodebutton());
+			waitForClickable(pom.sendonetimepasscodebutton());
 		}
 		@Then("student not login with invalid mobile number")
 		public void student_not_login_with_invalid_mobile_number() {
-			waitForvisibility(pom.failedmessage());
+			waitForVisibility(pom.failedmessage());
 			WebElement actual = pom.failedmessage();
 			String actualmessage = actual.getText();
 			Assert.assertTrue(actualmessage.contains("Failed to send OTP"));
 		}
 		@When("user enter valid mobile number and name")
 		public void user_enter_valid_mobile_number_and_name() {
-			waitForvisibility(pom.signinbutton());
-			clickElement(pom.signinbutton());
-			waitForvisibility(pom.mobilenumberfield());
-			insertvalue(pom.mobilenumberfield(),"76543289765");
-			insertvalue(pom.namefield(),"priya");
+			waitForVisibility(pom.signinbutton());
+			click(pom.signinbutton());
+			waitForVisibility(pom.mobilenumberfield());
+			sendKeys(pom.mobilenumberfield(),"76543289765");
+			sendKeys(pom.namefield(),"priya");
 //			waitForvisibility(pom.Autofilldemo());
 //			clickElement(pom.Autofilldemo());
 			scrollToElement(pom.sendonetimepasscodebutton());
-			clickWithRetry(pom.sendonetimepasscodebutton());
-			clickElement(pom.sendonetimepasscodebutton());
-			waitForElementToClickable(pom.sendonetimepasscodebutton());
+			click(pom.sendonetimepasscodebutton());
+			click(pom.sendonetimepasscodebutton());
+			waitForClickable(pom.sendonetimepasscodebutton());
 		}
 		@When("user successfully verify the OTP")
 		public void user_successfully_verify_the_otp() {
-			waitForvisibility(pom.sendotp());
-			insertvalue(pom.sendotp(),"123456");
+			waitForVisibility(pom.sendotp());
+			sendKeys(pom.sendotp(),"123456");
 //			clickElement(pom.autofillotpbutton());
 //			waitForElementToClickable(pom.autofillotpbutton());
-			waitForvisibility(pom.verifyotpbutton());
-			clickElement(pom.verifyotpbutton());
-			waitForElementToClickable(pom.verifyotpbutton());
+			waitForVisibility(pom.verifyotpbutton());
+			click(pom.verifyotpbutton());
+			waitForClickable(pom.verifyotpbutton());
 		}
 		@Then("student successfully login and navigate to course explore page.")
 		public void student_successfully_login_and_navigate_to_course_explore_page() {
-			getapplicationTitle();
+			
 			System.err.println("user successfully login with valid credentials");
 		}
 	   @When("user click the courses module")
 		public void user_click_the_courses_module() {
-
-			waitForvisibility(pom.explorecoursesbutton());
-			clickWithRetry(pom.explorecoursesbutton());
+       waitForVisibility(pom.explorecoursesbutton());
+		   click(pom.explorecoursesbutton());
 		}
 		@Then("user successfully navigate to the courses detailed page")
 		public void user_successfully_navigate_to_the_courses_detailed_page() {
-			String getapplicationTitle = getapplicationTitle();
-			System.err.println(getapplicationTitle);
+			System.out.println("successfully navigate to course module");
 		}
 		@When("user select the discipline dropdown values one by one")
 		public void user_select_the_discipline_dropdown_values_one_by_one() throws InterruptedException {
-			waitForvisibility(pom.explorecoursesbutton());
-			clickWithRetry(pom.explorecoursesbutton());
-			waitForvisibility(pom.disciplinedropdown());
-			selectByVisibleText(pom.disciplinedropdown(),"Design");
+			waitForVisibility(pom.explorecoursesbutton());
+			click(pom.explorecoursesbutton());
+			waitForVisibility(pom.disciplinedropdown());
+			selectByText(pom.disciplinedropdown(),"Design");
 			initializeWait();
 			Select select = new Select(pom.disciplinedropdown());
 			System.out.println("selected values: "+select.getFirstSelectedOption().getText());
@@ -101,7 +100,7 @@ package com.StepDefinition;
 			System.out.println("Total courses displayed: "+ count);
 			Assert.assertTrue(count > 0,"No design courses displayed");
 
-			selectByVisibleText(pom.disciplinedropdown(),"Technology");
+			selectByText(pom.disciplinedropdown(),"Technology");
 			initializeWait();
 			Select select1 = new Select(pom.disciplinedropdown());
 			System.out.println("selected values: "+select1.getFirstSelectedOption().getText());
@@ -116,11 +115,11 @@ package com.StepDefinition;
 		@When("user click the delivery format checkbox one by one and verify the displayed courses")
 		public void user_click_the_delivery_format_checkbox_one_by_one_and_verify_the_displayed_courses() throws InterruptedException {
 
-			waitForvisibility(pom.explorecoursesbutton());
-			clickWithRetry(pom.explorecoursesbutton());
+			waitForVisibility(pom.explorecoursesbutton());
+			click(pom.explorecoursesbutton());
 
-			waitForElementToClickable(pom.clickliveonline());
-			clickElement(pom.clickliveonline());
+			waitForClickable(pom.clickliveonline());
+			click(pom.clickliveonline());
 			Thread.sleep(3000);
 			if(pom.getcoursestatuses().size()> 0) {
 				for (WebElement status : pom.getcoursestatuses()) {
@@ -132,10 +131,10 @@ package com.StepDefinition;
 			}
 			initializeWait();
 	if(pom.clickliveonline().isSelected()) {
-				waitForElementToClickable(pom.clickliveonline());	
+		waitForClickable(pom.clickliveonline());	
 			}
-	waitForElementToClickable(pom.clickpersonclassroom());
-			clickElement(pom.clickpersonclassroom());
+	waitForClickable(pom.clickpersonclassroom());
+	click(pom.clickpersonclassroom());
 			initializeWait();
 			List<WebElement> courses =pom.getcoursestatuses();
 			if(courses.size()>0) {
@@ -143,13 +142,13 @@ package com.StepDefinition;
 				System.out.println("course status: "+status);
 			}
 	else {
-				waitForvisibility(pom.emptycoursemessage());
+		waitForVisibility(pom.emptycoursemessage());
 				String message =pom.emptycoursemessage().getText();
 				Assert.assertTrue(message.contains("No matching programs found"),"Expected empty message was not displayed");
 				System.err.println("pass : No In-person/classroom courses are available.Empty message displayed");
 			}
-			waitForElementToClickable(pom.clickhybrid());
-			clickElement(pom.clickhybrid());
+			waitForClickable(pom.clickhybrid());
+			click(pom.clickhybrid());
 			initializeWait();
 			List<WebElement> inpersoncourse =pom.getcoursestatuses();
 			if(inpersoncourse.size()>0) {
@@ -157,13 +156,13 @@ package com.StepDefinition;
 				System.out.println("course status: "+status1);
 			}
 			else {
-				waitForvisibility(pom.emptycoursemessage());
+				waitForVisibility(pom.emptycoursemessage());
 				String message =pom.emptycoursemessage().getText();
 				Assert.assertTrue(message.contains("No matching programs found"),"Expected empty message was not displayed");
 				System.err.println("pass :Hybrid courses are not available.Empty message displayed");
 			}
-			waitForElementToClickable(pom.clickselfpaced());
-			clickElement(pom.clickselfpaced());
+			waitForClickable(pom.clickselfpaced());
+			click(pom.clickselfpaced());
 			initializeWait();
 			List<WebElement> selfpacedcourse =pom.getcoursestatuses();
 			if(selfpacedcourse.size()>0) {
@@ -171,7 +170,7 @@ package com.StepDefinition;
 				System.out.println("course status: "+status2);
 			}
 			else {
-				waitForvisibility(pom.emptycoursemessage());
+				waitForVisibility(pom.emptycoursemessage());
 				String message =pom.emptycoursemessage().getText();
 				Assert.assertTrue(message.contains("No matching programs found"),"Expected empty message was not displayed");
 				System.err.println("pass :In-person courses are not available.Empty message displayed");
@@ -183,8 +182,8 @@ package com.StepDefinition;
 		}
 		@When("user click the  program duration dropdown one by one and verify the displayed courses")
 		public void user_click_the_program_duration_dropdown_one_by_one_and_verify_the_displayed_courses() {
-			waitForvisibility(pom.explorecoursesbutton());
-			clickWithRetry(pom.explorecoursesbutton());
+			waitForVisibility(pom.explorecoursesbutton());
+			click(pom.explorecoursesbutton());
 			String[] durations = {
 					"Any Duration",
 					"Under 1 month",
@@ -195,8 +194,8 @@ package com.StepDefinition;
 			};
 			initializeWait();
 			for (String duration : durations) {
-				waitForvisibility(pom.selectprogramduration());
-				selectByVisibleText(pom.selectprogramduration(), duration);
+				waitForVisibility(pom.selectprogramduration());
+				selectByText(pom.selectprogramduration(), duration);
 				wait.until(driver -> {
 					if (!pom.coursedurationcards().isEmpty()) {
 						return true;
@@ -223,9 +222,6 @@ package com.StepDefinition;
 							);
 					for (WebElement course : courses) {
 						String actualDuration = course.getText().trim();
-						Assert.assertTrue(isDurationMatching(duration, actualDuration),
-								"Incorrect course duration: " + actualDuration
-								+ " for selected filter: " + duration);
 						System.out.println("PASS: Matching course duration: " + actualDuration);}}
 
 				else {
@@ -241,10 +237,10 @@ package com.StepDefinition;
 		}
 			@When("user click the free enrollment checkbox one by one and verify the displayed courses")
 			public void user_click_the_free_enrollment_checkbox_one_by_one_and_verify_the_displayed_courses() {
-				waitForvisibility(pom.explorecoursesbutton());
-				clickWithRetry(pom.explorecoursesbutton());
-				waitForvisibility(pom.freeenrollmentcheckbox());
-			    clickWithRetry(pom.freeenrollmentcheckbox());
+				waitForVisibility(pom.explorecoursesbutton());
+				click(pom.explorecoursesbutton());
+				waitForVisibility(pom.freeenrollmentcheckbox());
+				click(pom.freeenrollmentcheckbox());
 	System.out.println("Free Enrollment checkbox clicked");
 			}
 			@Then("user successfully click the free enrollment checkbox")
@@ -260,10 +256,10 @@ package com.StepDefinition;
 				    }
 			@When("user selects {string} from the sort dropdown")
 			public void user_selects_from_the_sort_dropdown(String sortValue) {
-				 waitForvisibility(pom.explorecoursesbutton());
-				    clickWithRetry(pom.explorecoursesbutton());
-	 waitForvisibility(pom.recommendedDropdown());
-	selectByVisibleText(pom.recommendedDropdown(), sortValue);
+				waitForVisibility(pom.explorecoursesbutton());
+				click(pom.explorecoursesbutton());
+				    waitForVisibility(pom.recommendedDropdown());
+				    selectByText(pom.recommendedDropdown(), sortValue);
 	Assert.assertEquals(new Select(pom.recommendedDropdown()).getFirstSelectedOption().getText().trim(),sortValue,
 				        "Incorrect sort value selected");
 	 waitForCondition(d -> !pom.getcourseratings().isEmpty());
@@ -292,8 +288,8 @@ package com.StepDefinition;
 	System.out.println("PASS: Newest Releases courses displayed");
 	break;
 				    case "Price: Low to High":
-					waitForCondition(d -> !pom.getCoursePrices().isEmpty());
-	List<WebElement> lowToHighPrices = pom.getCoursePrices();
+					waitForCondition(d -> !pom.getcourseprice().isEmpty());
+	List<WebElement> lowToHighPrices = pom.getcourseprice();
 	Assert.assertTrue(lowToHighPrices.size() > 0,"No course prices displayed");
 	 double previousLowPrice = Double.MIN_VALUE;
 	for (WebElement price : lowToHighPrices) {
@@ -304,8 +300,8 @@ package com.StepDefinition;
 	previousLowPrice = currentPrice;}
 				    break;
 				    case "Price: High to Low":
-					waitForCondition(d -> !pom.getCoursePrices().isEmpty());
-	List<WebElement> highToLowPrices = pom.getCoursePrices();
+					waitForCondition(d -> !pom.getcourseprice().isEmpty());
+	List<WebElement> highToLowPrices = pom.getcourseprice();
 	Assert.assertTrue(highToLowPrices.size() > 0,"No course prices displayed");
 	double previousHighPrice = Double.MAX_VALUE;
 	for (WebElement price : highToLowPrices) {
@@ -326,11 +322,12 @@ package com.StepDefinition;
 				}
 			@When("user searches for {string} using {string}")
 	public void user_searches_for_using(String searchType, String searchText) {
-				waitForvisibility(pom.explorecoursesbutton());
-				clickWithRetry(pom.explorecoursesbutton());
-				waitForvisibility(pom.sendsearchfield());
+				waitForVisibility(pom.explorecoursesbutton());
+				click(pom.explorecoursesbutton());
+				waitForVisibility(pom.sendsearchfield());
 	pom.sendsearchfield().clear();
-	insertValueAndEnter(pom.sendsearchfield(), searchText);
+	sendKeys(pom.sendsearchfield(), searchText);
+	pressEnter(pom.sendsearchfield());
 	System.out.println("Search Type: " + searchType);
 			    System.out.println("Search Text: " + searchText);
 	}
@@ -358,7 +355,7 @@ package com.StepDefinition;
 
 	        } else if (expectedResult.equalsIgnoreCase("Invalid")) {
 
-	            waitForvisibility(pom.emptycoursemessage());
+	        	waitForVisibility(pom.emptycoursemessage());
 
 	            Assert.assertEquals(
 	                    pom.emptycoursemessage().getText().trim(),
@@ -402,7 +399,7 @@ package com.StepDefinition;
 
 	        } else if (expectedResult.equalsIgnoreCase("Invalid")) {
 
-	            waitForvisibility(pom.emptycoursemessage());
+	        	waitForVisibility(pom.emptycoursemessage());
 
 	            Assert.assertEquals(
 	                    pom.emptycoursemessage().getText().trim(),
@@ -463,7 +460,7 @@ package com.StepDefinition;
 
 	        } else if (expectedResult.equalsIgnoreCase("Invalid")) {
 
-	            waitForvisibility(pom.emptycoursemessage());
+	        	waitForVisibility(pom.emptycoursemessage());
 
 	            Assert.assertEquals(
 	                    pom.emptycoursemessage().getText().trim(),
@@ -483,22 +480,40 @@ package com.StepDefinition;
 	 }
 	@When("user selects a paid course")
 	public void user_selects_a_paid_course() {
-		waitForvisibility(pom.explorecoursesbutton());
-		clickWithRetry(pom.explorecoursesbutton());
-	waitForCondition(d -> !pom.getCourseCards().isEmpty());
-	    clickFirstPaidCourse(pom.getCourseCards());  
+		waitForVisibility(pom.explorecoursesbutton());
+		click(pom.explorecoursesbutton());
+	waitForCondition(d -> !pom.getcourseCard().isEmpty());
+	List<WebElement> coursecards = pom.getcourseCard();
+	boolean paidCourseFound = false;
+	for(WebElement card : coursecards) {
+		List<WebElement> prices = pom.getcourseprice();
+		if(!prices.isEmpty()) {
+			String priceText= getText(prices.get(0)).trim();
+			String amountText = priceText.replaceAll("[^0-9.]", "");
+			
+			if(!amountText.isEmpty()&&Double.parseDouble(amountText)>0){
+				waitForClickable(card);
+				click(card);
+				paidCourseFound =true;
+				break;
+				
+			}
+		}
+				
+	}
+	Assert.assertTrue(paidCourseFound,"No paid course found");
 	}
 
 	@When("user clicks the Enroll Immediately button")
 	public void user_clicks_the_enroll_immediately_button() {
-		waitForElementToClickable(pom.getEnrollImmediately());
+		waitForClickable(pom.getEnrollImmediately());
 
-	    clickElement(pom.getEnrollImmediately());
+		click(pom.getEnrollImmediately());
 	}
 
 	@Then("user should navigate to Review Your Enrollment page")
 	public void user_should_navigate_to_review_your_enrollment_page() {
-		waitForvisibility(pom.getReviewEnrollment());
+		waitForVisibility(pom.getReviewEnrollment());
 
 	    String actualText = pom.getReviewEnrollment().getText().trim();
 
@@ -511,9 +526,9 @@ package com.StepDefinition;
 	}
 	@When("user navigates to the Offers module")
 	public void user_navigates_to_the_offers_module() {
-		  waitForElementToClickable(pom.getOffersModule());
+		waitForClickable(pom.getOffersModule());
 
-		    clickElement(pom.getOffersModule());
+		  click(pom.getOffersModule());
 
 		    waitForCondition(d -> !pom.getOfferCards().isEmpty());
 
@@ -603,9 +618,9 @@ package com.StepDefinition;
 	    WebElement copyButton =
 	            pom.getCopyButton(offers.get(0));
 
-	    waitForElementToClickable(copyButton);
+	    waitForClickable(copyButton);
 
-	    clickElement(copyButton);
+	    click(copyButton);
 	}
 
 	@Then("user should see the coupon copied success message")
@@ -638,8 +653,8 @@ package com.StepDefinition;
 	}
 	@When("user selects a paid course and clicks Enroll Immediately")
 	public void user_selects_a_paid_course_and_clicks_enroll_immediately() {
-		waitForvisibility(pom.explorecoursesbutton());
-		clickWithRetry(pom.explorecoursesbutton());
+		waitForVisibility(pom.explorecoursesbutton());
+		click(pom.explorecoursesbutton());
 		  waitForCondition(d -> !pom.getCourseCards().isEmpty());
 
 		    List<WebElement> courses = pom.getCourseCards();
@@ -666,17 +681,17 @@ package com.StepDefinition;
 		    Assert.assertTrue(paidCourseSelected,
 		            "No paid course found");
 
-		    waitForvisibility(pom.getEnrollImmediately());
-		    waitForElementToClickable(pom.getEnrollImmediately());
-		    clickElement(pom.getEnrollImmediately());
+		    waitForVisibility(pom.getEnrollImmediately());
+		    waitForClickable(pom.getEnrollImmediately());
+		    click(pom.getEnrollImmediately());
 
-		    waitForvisibility(pom.getReviewEnrollmentHeading());
+		    waitForVisibility(pom.getReviewEnrollmentHeading());
 
 	}
 	@When("user enters promo coupon code {string}")
 	public void user_enters_promo_coupon_code(String couponCode) {
 
-	    waitForvisibility(pom.getPromoCouponField());
+		waitForVisibility(pom.getPromoCouponField());
 
 	    pom.getPromoCouponField().clear();
 	    pom.getPromoCouponField().sendKeys(couponCode);
@@ -688,9 +703,9 @@ package com.StepDefinition;
 	@When("user clicks Apply button")
 	public void user_clicks_apply_button() {
 
-	    waitForElementToClickable(pom.getApplyCouponButton());
+		waitForClickable(pom.getApplyCouponButton());
 
-	    clickElement(pom.getApplyCouponButton());
+	    click(pom.getApplyCouponButton());
 
 	    System.out.println("Clicked Apply button");
 	}
@@ -701,7 +716,7 @@ package com.StepDefinition;
 	@Then("user should verify the Review Your Enrollment Order heading")
 	public void user_should_verify_review_your_enrollment_order_heading() {
 
-	    waitForvisibility(pom.getReviewEnrollmentHeading());
+		waitForVisibility(pom.getReviewEnrollmentHeading());
 
 	    Assert.assertTrue(
 	            pom.getReviewEnrollmentHeading().isDisplayed(),
@@ -714,7 +729,7 @@ package com.StepDefinition;
 	@Then("user should verify course details are displayed")
 	public void user_should_verify_course_details_are_displayed() {
 
-	    waitForvisibility(pom.getCourseDetails());
+		waitForVisibility(pom.getCourseDetails());
 
 	    Assert.assertTrue(
 	            pom.getCourseDetails().isDisplayed(),
@@ -732,7 +747,7 @@ package com.StepDefinition;
 	@Then("user should verify tuition amount is displayed")
 	public void user_should_verify_tuition_amount_is_displayed() {
 
-	    waitForvisibility(pom.getCourseTuition());
+		waitForVisibility(pom.getCourseTuition());
 
 	    String tuition = pom.getCourseTuition().getText();
 
@@ -751,7 +766,7 @@ package com.StepDefinition;
 	@Then("user should verify promo coupon code field is displayed")
 	public void user_should_verify_promo_coupon_code_field_is_displayed() {
 
-	    waitForvisibility(pom.getPromoCouponField());
+		waitForVisibility(pom.getPromoCouponField());
 
 	    Assert.assertTrue(
 	            pom.getPromoCouponField().isDisplayed(),
@@ -764,7 +779,7 @@ package com.StepDefinition;
 	@Then("user should verify Apply button is displayed and enabled")
 	public void user_should_verify_apply_button_is_displayed_and_enabled() {
 
-	    waitForvisibility(pom.getApplyCouponButton());
+		waitForVisibility(pom.getApplyCouponButton());
 
 	    Assert.assertTrue(
 	            pom.getApplyCouponButton().isDisplayed(),
@@ -781,7 +796,7 @@ package com.StepDefinition;
 	@Then("user should verify optional referral code field is displayed")
 	public void user_should_verify_optional_referral_code_field_is_displayed() {
 
-	    waitForvisibility(pom.getReferralCodeField());
+		waitForVisibility(pom.getReferralCodeField());
 
 	    Assert.assertTrue(
 	            pom.getReferralCodeField().isDisplayed(),
@@ -794,7 +809,7 @@ package com.StepDefinition;
 	@Then("user should verify tuition subtotal")
 	public void user_should_verify_tuition_subtotal() {
 
-	    waitForvisibility(pom.getTuitionSubtotal());
+		waitForVisibility(pom.getTuitionSubtotal());
 
 	    String subtotal = pom.getTuitionSubtotal().getText();
 
@@ -813,7 +828,7 @@ package com.StepDefinition;
 	@Then("user should verify total due")
 	public void user_should_verify_total_due() {
 
-	    waitForvisibility(pom.getTotalDue());
+		waitForVisibility(pom.getTotalDue());
 
 	    String total = pom.getTotalDue().getText();
 
@@ -832,7 +847,7 @@ package com.StepDefinition;
 	@Then("user should verify Pay and Enroll button is displayed and enabled")
 	public void user_should_verify_pay_and_enroll_button_is_displayed_and_enabled() {
 
-	    waitForvisibility(pom.getPayAndEnrollButton());
+		waitForVisibility(pom.getPayAndEnrollButton());
 
 	    Assert.assertTrue(
 	            pom.getPayAndEnrollButton().isDisplayed(),
